@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Github Repository Teams Overview",
+  "description": "This extensions adds the list of teams to lists of repositories in your organization.",
+  "version": "0.1",
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://github.com/*",
+        "https://github.com/*",
+        "http://www.github.com/*",
+        "https://www.github.com/*"],
+      "js": ["qwest.min.js", "content.js"]
+    }
+  ],
+  "permissions": [
+    "https://api.github.com/repos/*",
+    "storage"
+  ]
+}
