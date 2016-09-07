@@ -1,12 +1,13 @@
 // Saves options to chrome.storage
 function save_options() {
   var personalAccessToken = document.getElementById('personal-access-token').value;
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     personalAccessToken: personalAccessToken
   }, function() {
     var status = document.getElementById('status');
     status.textContent = 'Checking login...';
     qwest.get('https://api.github.com/user', null, {
+      cache: true,
       headers: {
         Accept: "application/vnd.github.v3+json",
         Authorization: "token " + personalAccessToken
@@ -27,7 +28,7 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-  chrome.storage.sync.get({
+  chrome.storage.local.get({
     personalAccessToken: ""
   }, function(items) {
     document.getElementById('personal-access-token').value = items.personalAccessToken;

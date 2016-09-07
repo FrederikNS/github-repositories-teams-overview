@@ -14,16 +14,17 @@ function enrichTeam(el, response) {
 }
 
 function enrichTeams() {
-  chrome.storage.sync.get(function(items) {
+  chrome.storage.local.get(function(items) {
     if (items.personalAccessToken) {
       var repos = document.querySelectorAll('.repo-list>.repo-list-item')
 
-      repos.forEach(function(el, i) {
+      _.each(repos, function(el) {
         var repoName = el.querySelector('.repo-list-name>a').pathname
         if (knownTeams.hasOwnProperty(repoName)) {
           enrichTeam(el, knownTeams[repoName])
         } else {
           qwest.get(`https://api.github.com/repos${repoName}/teams`, null, {
+            cache: true,
             headers: {
               Accept: "application/vnd.github.v3+json",
               Authorization: `token ${items.personalAccessToken}`

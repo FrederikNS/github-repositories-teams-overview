@@ -1,4 +1,5 @@
-This extension is released under the MIT License, it also makes use of the Qwest library (https://github.com/pyrsmk/qwest) which is also released under the MIT License
+This extension is released under the MIT License, it also makes use of the Qwest library (https://github.com/pyrsmk/qwest) which is also released under the MIT License.
+Icons made by Gregor Cresnar from www.flaticon.com is licensed by Creative Commons BY 3.0
 
 THE MIT LICENSE (MIT)
 Copyright © 2015 DreamySource <contact@dreamysource.fr>
