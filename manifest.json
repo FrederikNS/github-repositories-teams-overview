@@ -3,7 +3,7 @@
 
   "name": "Github Repository Teams Overview",
   "description": "This extensions adds the list of teams to lists of repositories in your organization.",
-  "version": "0.2",
+  "version": "0.3",
   "options_page": "options.html",
   "options_ui": {
     "page": "options.html"

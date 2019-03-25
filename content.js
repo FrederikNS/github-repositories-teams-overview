@@ -2,24 +2,39 @@ knownTeams = {}
 
 function enrichTeam(el, response) {
   if (response.length > 0) {
-    teamNames = response.map(function(team) {return `<a href="https://github.com/orgs${window.location.pathname}/teams/${team.slug}">${team.name}</a>`})
+    teamNodes = response.map(function(team) {
+      var elem = document.createElement('a')
+      elem.textContent = team.name
+      elem.setAttribute('href', `https://github.com/orgs${window.location.pathname}/teams/${team.slug}`)
+      return elem
+    })
 
     var teamElement = document.createElement('div')
-    teamElement.style.color = "#666"
-    teamElement.innerHTML = `Teams: ${teamNames.join(', ')}`
+    teamElement.style.color = '#666'
+    teamElement.textContent = 'Teams: '
 
-    descriptionNode = el.querySelector('.repo-list-meta')
-    descriptionNode.parentNode.insertBefore(teamElement, descriptionNode)
+    var teamNodesWithSeparators = _.chain(teamNodes)
+      .map(function(v) {return [v, document.createTextNode(', ')]})
+      .reduce(function(a,b) {return a.concat(b)})
+      .initial()
+      .value()
+
+    _.each(teamNodesWithSeparators, function(v) {
+      teamElement.append(v)
+    })
+
+    descriptionNode = el.querySelector('.d-inline-block')
+    descriptionNode.append(teamElement)
   }
 }
 
 function enrichTeams() {
   chrome.storage.local.get(function(items) {
     if (items.personalAccessToken) {
-      var repos = document.querySelectorAll('.repo-list>.repo-list-item')
+      var repos = document.querySelectorAll('.repo-list>li')
 
       _.each(repos, function(el) {
-        var repoName = el.querySelector('.repo-list-name>a').pathname
+        var repoName = el.querySelector('.d-inline-block a').pathname
         if (knownTeams.hasOwnProperty(repoName)) {
           enrichTeam(el, knownTeams[repoName])
         } else {
@@ -38,6 +53,8 @@ function enrichTeams() {
     }
   })
 }
+
+console.log("Ping!")
 enrichTeams()
 var repoList = document.querySelector('.repo-list')
 var observer = new MutationObserver(enrichTeams)
